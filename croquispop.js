@@ -21,7 +21,6 @@ var croquisDOMElement = croquis.getDOMElement();
 var canvasArea = document.getElementById('canvas-area');
 canvasArea.appendChild(croquisDOMElement);
 function canvasPointerDown(e) {
-	e.preventDefault();
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'none');	
 	croquis.down(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
@@ -34,7 +33,6 @@ function canvasPointerMove(e) {
     croquis.move(pointerPosition.x, pointerPosition.y);
 }
 function canvasPointerUp(e) {
-	e.preventDefault();
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'crosshair');
     croquis.up(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
@@ -65,10 +63,10 @@ var brushImages = document.getElementsByClassName('brush-image');
 var currentBrush = circleBrush;
 
 Array.prototype.map.call(brushImages, function (brush) {
-    brush.addEventListener('pointerdown', brushImageMouseDown);
+    brush.addEventListener('pointerdown', brushImagePointerDown);
 });
 
-function brushImageMouseDown(e) {
+function brushImagePointerDown(e) {
     var image = e.currentTarget;
     currentBrush.className = 'brush-image';
     image.className = 'brush-image on';
@@ -164,14 +162,15 @@ colorPickerHueSlider.onchange = function () {
     setColor();
 }
 
-function colorPickerMouseDown(e) {
-    document.addEventListener('pointermove', colorPickerMouseMove);
-    colorPickerMouseMove(e);
+function colorPickerPointerDown(e) {
+    document.addEventListener('pointermove', colorPickerPointerMove);
+    colorPickerPointerMove(e);
 }
-function colorPickerMouseUp(e) {
-    document.removeEventListener('pointermove', colorPickerMouseMove);
+function colorPickerPointerUp(e) {
+    document.removeEventListener('pointermove', colorPickerPointerMove);
 }
-function colorPickerMouseMove(e) {
+function colorPickerPointerMove(e) {
+	e.preventDefault();
     var boundRect = colorPickerSb.getBoundingClientRect();
     var x = (e.clientX - boundRect.left);
     var y = (e.clientY - boundRect.top);
@@ -191,8 +190,8 @@ function pickColor(x, y) {
         (y < sbSize * 0.5)? '#000' : '#fff');
     setColor();
 }
-colorPickerSb.addEventListener('pointerdown', colorPickerMouseDown);
-document.addEventListener('pointerup', colorPickerMouseUp);
+colorPickerSb.addEventListener('pointerdown', colorPickerPointerDown);
+document.addEventListener('pointerup', colorPickerPointerUp);
 
 var backgroundCheckerImage;
 (function () {
