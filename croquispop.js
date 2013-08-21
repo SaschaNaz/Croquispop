@@ -29,7 +29,7 @@ function canvasPointerDown(e) {
 }
 function canvasPointerMove(e) {
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
-    croquis.move(pointerPosition.x, pointerPosition.y);
+    croquis.move(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
 }
 function canvasPointerUp(e) {
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
