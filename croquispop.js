@@ -20,29 +20,29 @@ croquis.setToolStabilizeWeight(0.5);
 var croquisDOMElement = croquis.getDOMElement();
 var canvasArea = document.getElementById('canvas-area');
 canvasArea.appendChild(croquisDOMElement);
-function canvasMouseDown(e) {
-    var mousePosition = getRelativePosition(e.clientX, e.clientY);
-    canvasArea.style.setProperty('cursor', 'none');
-    croquis.down(mousePosition.x, mousePosition.y);
-    document.addEventListener('mousemove', canvasMouseMove);
-    document.addEventListener('mouseup', canvasMouseUp);
+function canvasPointerDown(e) {
+    var pointerPosition = getRelativePosition(e.clientX, e.clientY);
+    canvasArea.style.setProperty('cursor', 'none');	
+	croquis.down(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
+    document.addEventListener('pointermove', canvasPointerMove);
+    document.addEventListener('pointerup', canvasPointerUp);
 }
-function canvasMouseMove(e) {
-    var mousePosition = getRelativePosition(e.clientX, e.clientY);
-    croquis.move(mousePosition.x, mousePosition.y);
+function canvasPointerMove(e) {
+    var pointerPosition = getRelativePosition(e.clientX, e.clientY);
+    croquis.move(pointerPosition.x, pointerPosition.y);
 }
-function canvasMouseUp(e) {
-    var mousePosition = getRelativePosition(e.clientX, e.clientY);
+function canvasPointerUp(e) {
+    var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'crosshair');
-    croquis.up(mousePosition.x, mousePosition.y);
-    document.removeEventListener('mousemove', canvasMouseMove);
-    document.removeEventListener('mouseup', canvasMouseUp);
+    croquis.up(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
+    document.removeEventListener('pointermove', canvasPointerMove);
+    document.removeEventListener('pointerup', canvasPointerUp);
 }
 function getRelativePosition(absoluteX, absoluteY) {
     var rect = croquisDOMElement.getBoundingClientRect();
     return {x: absoluteX - rect.left, y: absoluteY - rect.top};
 }
-croquisDOMElement.addEventListener('mousedown', canvasMouseDown);
+croquisDOMElement.addEventListener('pointerdown', canvasPointerDown);
 
 //clear & fill button ui
 var clearButton = document.getElementById('clear-button');
@@ -62,7 +62,7 @@ var brushImages = document.getElementsByClassName('brush-image');
 var currentBrush = circleBrush;
 
 Array.prototype.map.call(brushImages, function (brush) {
-    brush.addEventListener('mousedown', brushImageMouseDown);
+    brush.addEventListener('pointerdown', brushImageMouseDown);
 });
 
 function brushImageMouseDown(e) {
@@ -89,12 +89,12 @@ var brushPointerContainer = document.createElement('div');
 brushPointerContainer.className = 'brush-pointer';
 
 if (IEVersion > 10) {
-    croquisDOMElement.addEventListener('mouseover', function () {
-        croquisDOMElement.addEventListener('mousemove', croquisMouseMove);
+    croquisDOMElement.addEventListener('pointerover', function () {
+        croquisDOMElement.addEventListener('pointermove', croquisMouseMove);
         document.body.appendChild(brushPointerContainer);
     });
-    croquisDOMElement.addEventListener('mouseout', function () {
-        croquisDOMElement.removeEventListener('mousemove', croquisMouseMove);
+    croquisDOMElement.addEventListener('pointerout', function () {
+        croquisDOMElement.removeEventListener('pointermove', croquisMouseMove);
         brushPointerContainer.parentElement.removeChild(brushPointerContainer);
     });
 }
@@ -161,11 +161,11 @@ colorPickerHueSlider.onchange = function () {
 }
 
 function colorPickerMouseDown(e) {
-    document.addEventListener('mousemove', colorPickerMouseMove);
+    document.addEventListener('pointermove', colorPickerMouseMove);
     colorPickerMouseMove(e);
 }
 function colorPickerMouseUp(e) {
-    document.removeEventListener('mousemove', colorPickerMouseMove);
+    document.removeEventListener('pointermove', colorPickerMouseMove);
 }
 function colorPickerMouseMove(e) {
     var boundRect = colorPickerSb.getBoundingClientRect();
@@ -187,8 +187,8 @@ function pickColor(x, y) {
         (y < sbSize * 0.5)? '#000' : '#fff');
     setColor();
 }
-colorPickerSb.addEventListener('mousedown', colorPickerMouseDown);
-document.addEventListener('mouseup', colorPickerMouseUp);
+colorPickerSb.addEventListener('pointerdown', colorPickerMouseDown);
+document.addEventListener('pointerup', colorPickerMouseUp);
 
 var backgroundCheckerImage;
 (function () {
