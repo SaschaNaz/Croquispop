@@ -12,6 +12,7 @@ body {
 }
 
 #canvas-area {
+  touch-action: none;
   display: inline-block;
   cursor: crosshair;
 }
@@ -22,6 +23,7 @@ body {
 }
 
 #color-picker {
+  touch-action: none;
 }
 
 #color-picker:active {
