@@ -23,7 +23,7 @@ canvasArea.appendChild(croquisDOMElement);
 function canvasPointerDown(e) {
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'none');	
-	croquis.down(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure * 1024 : null);
+	croquis.down(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
     document.addEventListener('pointermove', canvasPointerMove);
     document.addEventListener('pointerup', canvasPointerUp);
 }
@@ -34,7 +34,7 @@ function canvasPointerMove(e) {
 function canvasPointerUp(e) {
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'crosshair');
-    croquis.up(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure * 1024 : null);
+    croquis.up(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
     document.removeEventListener('pointermove', canvasPointerMove);
     document.removeEventListener('pointerup', canvasPointerUp);
 }

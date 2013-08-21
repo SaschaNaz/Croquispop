@@ -12,9 +12,12 @@ body {
 }
 
 #canvas-area {
-  touch-action: none;
   display: inline-block;
   cursor: crosshair;
+}
+
+#croquis-dirty-rect-display {
+  touch-action: none;
 }
 
 #right-side {
