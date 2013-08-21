@@ -20,29 +20,29 @@ croquis.setToolStabilizeWeight(0.5);
 var croquisDOMElement = croquis.getDOMElement();
 var canvasArea = document.getElementById('canvas-area');
 canvasArea.appendChild(croquisDOMElement);
-function canvasMouseDown(e) {
-    var mousePosition = getRelativePosition(e.clientX, e.clientY);
-    canvasArea.style.setProperty('cursor', 'none');
-    croquis.down(mousePosition.x, mousePosition.y);
-    document.addEventListener('pointermove', canvasMouseMove);
-    document.addEventListener('pointerup', canvasMouseUp);
+function canvasPointerDown(e) {
+    var pointerPosition = getRelativePosition(e.clientX, e.clientY);
+    canvasArea.style.setProperty('cursor', 'none');	
+	croquis.down(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
+    document.addEventListener('pointermove', canvasPointerMove);
+    document.addEventListener('pointerup', canvasPointerUp);
 }
-function canvasMouseMove(e) {
-    var mousePosition = getRelativePosition(e.clientX, e.clientY);
-    croquis.move(mousePosition.x, mousePosition.y);
+function canvasPointerMove(e) {
+    var pointerPosition = getRelativePosition(e.clientX, e.clientY);
+    croquis.move(pointerPosition.x, pointerPosition.y);
 }
-function canvasMouseUp(e) {
-    var mousePosition = getRelativePosition(e.clientX, e.clientY);
+function canvasPointerUp(e) {
+    var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'crosshair');
-    croquis.up(mousePosition.x, mousePosition.y);
-    document.removeEventListener('pointermove', canvasMouseMove);
-    document.removeEventListener('pointerup', canvasMouseUp);
+    croquis.up(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
+    document.removeEventListener('pointermove', canvasPointerMove);
+    document.removeEventListener('pointerup', canvasPointerUp);
 }
 function getRelativePosition(absoluteX, absoluteY) {
     var rect = croquisDOMElement.getBoundingClientRect();
     return {x: absoluteX - rect.left, y: absoluteY - rect.top};
 }
-croquisDOMElement.addEventListener('pointerdown', canvasMouseDown);
+croquisDOMElement.addEventListener('pointerdown', canvasPointerDown);
 
 //clear & fill button ui
 var clearButton = document.getElementById('clear-button');
