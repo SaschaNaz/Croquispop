@@ -21,6 +21,7 @@ var croquisDOMElement = croquis.getDOMElement();
 var canvasArea = document.getElementById('canvas-area');
 canvasArea.appendChild(croquisDOMElement);
 function canvasPointerDown(e) {
+	e.preventDefault();
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'none');	
 	croquis.down(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
@@ -28,10 +29,12 @@ function canvasPointerDown(e) {
     document.addEventListener('pointerup', canvasPointerUp);
 }
 function canvasPointerMove(e) {
+	e.preventDefault();
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     croquis.move(pointerPosition.x, pointerPosition.y);
 }
 function canvasPointerUp(e) {
+	e.preventDefault();
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'crosshair');
     croquis.up(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
