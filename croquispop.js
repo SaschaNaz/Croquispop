@@ -21,7 +21,6 @@ var croquisDOMElement = croquis.getDOMElement();
 var canvasArea = document.getElementById('canvas-area');
 canvasArea.appendChild(croquisDOMElement);
 function canvasPointerDown(e) {
-	e.preventDefault();
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'none');	
 	croquis.down(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
@@ -34,7 +33,6 @@ function canvasPointerMove(e) {
     croquis.move(pointerPosition.x, pointerPosition.y);
 }
 function canvasPointerUp(e) {
-	e.preventDefault();
     var pointerPosition = getRelativePosition(e.clientX, e.clientY);
     canvasArea.style.setProperty('cursor', 'crosshair');
     croquis.up(pointerPosition.x, pointerPosition.y, e.pointerType == "pen" ? e.pressure : null);
@@ -172,6 +170,7 @@ function colorPickerPointerUp(e) {
     document.removeEventListener('pointermove', colorPickerPointerMove);
 }
 function colorPickerPointerMove(e) {
+	e.preventDefault();
     var boundRect = colorPickerSb.getBoundingClientRect();
     var x = (e.clientX - boundRect.left);
     var y = (e.clientY - boundRect.top);
