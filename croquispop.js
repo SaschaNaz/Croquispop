@@ -93,16 +93,17 @@ brushPointerContainer.className = 'brush-pointer';
 
 if (IEVersion > 10) {
     croquisDOMElement.addEventListener('pointerover', function () {
-        croquisDOMElement.addEventListener('pointermove', croquisMouseMove);
+        croquisDOMElement.addEventListener('pointermove', croquisPointerMove);
         document.body.appendChild(brushPointerContainer);
     });
     croquisDOMElement.addEventListener('pointerout', function () {
-        croquisDOMElement.removeEventListener('pointermove', croquisMouseMove);
+        croquisDOMElement.removeEventListener('pointermove', croquisPointerMove);
         brushPointerContainer.parentElement.removeChild(brushPointerContainer);
     });
 }
 
-function croquisMouseMove(e) {
+function croquisPointerMove(e) {
+	e.preventDefault();
     var x = e.clientX + window.pageXOffset;
     var y = e.clientY + window.pageYOffset;
     brushPointerContainer.style.setProperty('left', x + 'px');
